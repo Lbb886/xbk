@@ -1,7 +1,8 @@
 
 //********用户配置区域开始*****************************************
-// 版本号：1.2
+// 版本号：1.3
 // 1.2版本：集成wxpusher推送，修复某些情况读写历史记录出错
+// 1.3版本：集成微信公众号息知推送，继续修复读写历史记录出错
 
 //定义推送的线报酷域名，支持的域名有 http://new.ixbk.net，http://new.xianbao.fun, http://new.ixbk.fun 
 const domin = 'http://new.ixbk.net';
@@ -52,7 +53,7 @@ function daysComputed(time){var oldTimeFormat=new Date(time.replace(/-/g,'/'));v
 function listfilter(group,pingbifenlei,pingbilouzhu,zhanxianlouzhu,pingbilouzhuplus,pingbibiaoti,zhanxianbiaoti,pingbibiaotiplus,pingbineirong,zhanxianneirong,pingbineirongplus,pingbitime){var louzhubaoliu,biaotibaoliu,neirongbaoliu,louzhupingbi,louzhupingbiplus,biaotipingbi,biaotipingbiplus,neirongpingbi,neirongpingbiplus;if(pingbitime&&group.louzhuregtime){if(pingbitime.match(new RegExp(/###/),"g")){pingbitimearr=pingbitime.split(/<br>|\n\n|\r\n/);for(j=0;j<pingbitimearr.length;j++){xiaopingbitimearr=pingbitimearr[j].split("###");if(group.catename.match(new RegExp(xiaopingbitimearr[0],"i"))&&xiaopingbitimearr[1]>daysComputed(group.louzhuregtime)){return false}}}else{if(pingbitime>daysComputed(group.louzhuregtime)){return false}}}if(pingbifenlei&&group.catename){if(group.catename.match(new RegExp(pingbifenlei,"i"))){return false}}if(zhanxianlouzhu&&group.louzhu){if(zhanxianlouzhu.match(new RegExp(/###/),"g")){zhanxianlouzhuarr=zhanxianlouzhu.split(/<br>|\n\n|\r\n/);for(j=0;j<zhanxianlouzhuarr.length;j++){xiaozhanxianlouzhuarr=zhanxianlouzhuarr[j].split("###");if(group.catename.match(new RegExp(xiaozhanxianlouzhuarr[0],"i"))&&group.louzhu.match(new RegExp(xiaozhanxianlouzhuarr[1],"i"))){louzhubaoliu=1}}}else{if(group.louzhu.match(new RegExp(zhanxianlouzhu,"i"))){louzhubaoliu=1}}}if(pingbilouzhu&&group.louzhu&&louzhubaoliu!=1){if(pingbilouzhu.match(new RegExp(/###/),"g")){pingbilouzhuarr=pingbilouzhu.split(/<br>|\n\n|\r\n/);for(j=0;j<pingbilouzhuarr.length;j++){xiaopingbilouzhuarr=pingbilouzhuarr[j].split("###");if(group.catename.match(new RegExp(xiaopingbilouzhuarr[0],"i"))&&group.louzhu.match(new RegExp(xiaopingbilouzhuarr[1],"i"))){louzhupingbi=1}}}else{if(group.louzhu.match(new RegExp(pingbilouzhu,"i"))){louzhupingbi=1}}}if(pingbilouzhuplus&&group.louzhu&&louzhupingbi!=1){if(pingbilouzhuplus.match(new RegExp(/###/),"g")){pingbilouzhuplusarr=pingbilouzhuplus.split(/<br>|\n\n|\r\n/);for(j=0;j<pingbilouzhuplusarr.length;j++){xiaopingbilouzhuplusarr=pingbilouzhuplusarr[j].split("###");if(group.catename.match(new RegExp(xiaopingbilouzhuplusarr[0],"i"))&&group.louzhu.match(new RegExp(xiaopingbilouzhuplusarr[1],"i"))){louzhupingbiplus=1;louzhubaoliu=0}}}else{if(group.louzhu.match(new RegExp(pingbilouzhuplus,"i"))){louzhupingbiplus=1;louzhubaoliu=0}}}if(louzhupingbi==1||louzhupingbiplus==1){return false}if(zhanxianbiaoti&&group.title){if(zhanxianbiaoti.match(new RegExp(/###/),"g")){zhanxianbiaotiarr=zhanxianbiaoti.split(/<br>|\n\n|\r\n/);for(j=0;j<zhanxianbiaotiarr.length;j++){xiaozhanxianbiaotiarr=zhanxianbiaotiarr[j].split("###");if(group.catename.match(new RegExp(xiaozhanxianbiaotiarr[0],"i"))&&group.title.match(new RegExp(xiaozhanxianbiaotiarr[1],"i"))){biaotibaoliu=1}}}else{if(group.title.match(new RegExp(zhanxianbiaoti,"i"))){biaotibaoliu=1}}}if(pingbibiaoti&&group.title&&louzhubaoliu!=1&&biaotibaoliu!=1){if(pingbibiaoti.match(new RegExp(/###/),"g")){pingbibiaotiarr=pingbibiaoti.split(/<br>|\n\n|\r\n/);for(j=0;j<pingbibiaotiarr.length;j++){xiaopingbibiaotiarr=pingbibiaotiarr[j].split("###");if(group.catename.match(new RegExp(xiaopingbibiaotiarr[0],"i"))&&group.title.match(new RegExp(xiaopingbibiaotiarr[1],"i"))){biaotipingbi=1}}}else{if(group.title.match(new RegExp(pingbibiaoti,"i"))){biaotipingbi=1}}}if(pingbibiaotiplus&&group.title&&louzhubaoliu!=1&&biaotipingbi!=1){if(pingbibiaotiplus.match(new RegExp(/###/),"g")){pingbibiaotiplusarr=pingbibiaotiplus.split(/<br>|\n\n|\r\n/);for(j=0;j<pingbibiaotiplusarr.length;j++){xiaopingbibiaotiplusarr=pingbibiaotiplusarr[j].split("###");if(group.catename.match(new RegExp(xiaopingbibiaotiplusarr[0],"i"))&&group.title.match(new RegExp(xiaopingbibiaotiplusarr[1],"i"))){biaotipingbiplus=1;biaotibaoliu=0}}}else{if(group.title.match(new RegExp(pingbibiaotiplus,"i"))){biaotipingbiplus=1;biaotibaoliu=0}}}if(biaotipingbi==1||biaotipingbiplus==1){return false}if(zhanxianneirong&&group.content){if(zhanxianneirong.match(new RegExp(/###/),"g")){zhanxianneirongarr=zhanxianneirong.split(/<br>|\n\n|\r\n/);for(j=0;j<zhanxianneirongarr.length;j++){xiaozhanxianneirongarr=zhanxianneirongarr[j].split("###");if(group.catename.match(new RegExp(xiaozhanxianneirongarr[0],"i"))&&group.content.match(new RegExp(xiaozhanxianneirongarr[1],"i"))){neirongbaoliu=1}}}else{if(group.content.match(new RegExp(zhanxianneirong,"i"))){neirongbaoliu=1}}}if(pingbineirong&&group.content&&louzhubaoliu!=1&&biaotibaoliu!=1&&neirongbaoliu!=1){if(pingbineirong.match(new RegExp(/###/),"g")){pingbineirongarr=pingbineirong.split(/<br>|\n\n|\r\n/);for(j=0;j<pingbineirongarr.length;j++){xiaopingbineirongarr=pingbineirongarr[j].split("###");if(group.catename.match(new RegExp(xiaopingbineirongarr[0],"i"))&&group.content.match(new RegExp(xiaopingbineirongarr[1],"i"))){neirongpingbi=1}}}else{if(group.content.match(new RegExp(pingbineirong,"i"))){neirongpingbi=1}}}if(pingbineirongplus&&group.content&&louzhubaoliu!=1&&biaotibaoliu!=1&&neirongpingbi!=1){if(pingbineirongplus.match(new RegExp(/###/),"g")){pingbineirongplusarr=pingbineirongplus.split(/<br>|\n\n|\r\n/);for(j=0;j<pingbineirongplusarr.length;j++){xiaopingbineirongplusarr=pingbineirongplusarr[j].split("###");if(group.catename.match(new RegExp(xiaopingbineirongplusarr[0],"i"))&&group.content.match(new RegExp(xiaopingbineirongplusarr[1],"i"))){neirongpingbiplus=1;neirongbaoliu=0}}}else{if(group.content.match(new RegExp(pingbineirongplus,"i"))){neirongpingbiplus=1;neirongbaoliu=0}}}if(neirongpingbi==1||neirongpingbiplus==1){return false}return true}
 function isMessageInFile(message,filePath){if(!fs.existsSync(filePath)){fs.writeFileSync(filePath,'[]');}const data=fs.readFileSync(filePath,'utf8');if(!data){return false;}const messages=JSON.parse(data);return messages.some(existingMessage=>existingMessage.id===message.id);}
 function stringifySafe(obj){try{return JSON.stringify(obj);}catch(error){console.error('Failed to stringify object:',error);return '{}';}}
-function appendMessageToFile(message,filePath){if(!fs.existsSync(filePath)){fs.writeFileSync(filePath,'[]');}const data=fs.readFileSync(filePath,'utf8');const messages=data?JSON.parse(data):[];const filteredMessage={id:message.id,title:message.title,};messages.push(filteredMessage);if(messages.length>100){messages.splice(0,messages.length-100);}const jsonMessages=stringifySafe(messages);fs.writeFileSync(filePath,jsonMessages,'utf8');/*console.debug(`消息已添加到文件 ${filePath}:${message.title}`);*/}
+function appendMessageToFile(message,filePath){if(!fs.existsSync(filePath)){fs.writeFileSync(filePath,'[]');}const data=fs.readFileSync(filePath,'utf8');const messages=data?JSON.parse(data):[];const filteredMessage={id:message.id};messages.push(filteredMessage);if(messages.length>100){messages.splice(0,messages.length-100);}const jsonMessages=stringifySafe(messages);fs.writeFileSync(filePath,jsonMessages,'utf8');/*console.debug(`消息已添加到文件 ${filePath}:${message.title}`);*/}
 const notify = require('./xianbao_send');
 const fs = require('fs');
 const request = require('request');
@@ -120,19 +121,44 @@ console.debug('开始获取线报酷数据...');
         //推送的内容格式需要自己修改
         //推送的内容格式需要自己修改
         //推送的内容格式需要自己修改
-        notify.sendNotify(item.title+"【"+item.catename+"】", domin+item.url);
-        //----------------------------------------
-        // notify.sendNotify("标题","描述") 是 xianbao_send.js 填写了参数的全部推送
-        //以上意思就是 全部推送(部分推送可能要调换顺序)： item.title+"【"+item.catename+"】" 代表：标题+【分类名】 ，domin+item.url 代码访问地址
-        //----------------------------------------
         
         // item 包含了信息很多参数，字段说明：item.title标题，item.content文字内容，item.datetime日期，item.shorttime时间，item.shijianchuo时间戳，item.cateid分类id，item.catename分类名，item.louzhu楼主名字，item.louzhuregtime楼主注册日期，item.url线报酷文章相对路径
+       
+//         {
+//          id: 3617548,
+//          title: 'CAVID KARRIE纯棉抑菌裆 19.9',
+//          content: 'CAVID KARRIE纯棉抑菌裆4件，19.9 -服饰鞋帽-拼多多线报',
+//          datetime: '2024-09-15',
+//          shorttime: '20:38',
+//          shijianchuo: 1726403880,
+//          cateid: '10',
+//          catename: '微博线报-服饰鞋帽-拼多多线报',
+//          comments: 1,
+//          louzhu: '拼夕夕捡漏bot',
+//          louzhuregtime: null,
+//          url: '/weibo/3617548.html'
+// }
+        
+        //通过判断item的参数，可以自己写代码写别的筛选等别的东西
+
+        const text = item.title+"【"+item.catename+"】"; //得到： CAVID KARRIE纯棉抑菌裆 19.9【微博线报-服饰鞋帽-拼多多线报】
+        const desp = domin+item.url; //线报酷文章访问链接  得到：http://new.ixbk.net/weibo/3617548.html
+
+        //例如访问链接加<a>标签可点击： const desp = `<a href="${domin}${item.url}">${domin}${item.url}</a>`;
+        //例如需要加markdown链接可点击： const desp = `[${domin}${item.url}](${domin}${item.url})`;
+
+        notify.sendNotify(text, desp);//
+        //----------------------------------------
+        // notify.sendNotify(text, desp) 是 xianbao_send.js 填写了参数的全部推送
+        //以上意思就是 全部推送(部分推送可能要调换text, desp的顺序)
+     
         //也可以设置单独推送某一个推送通道
         //----------------------------------------
         //notify.serverNotify(text, desp); 微信server酱
         //notify.pushPlusNotify(text, desp); pushplus
         //notify.wePlusBotNotify(text, desp); 微加机器人
         //notify.wxPusherNotify(text, desp); wxpusher推送
+        //notify.wxXiZhiNotify(text, desp); 息知推送
         //notify.barkNotify(text, desp, params); iOS Bark APP
         //notify.tgBotNotify(text, desp); telegram 机器人
         //notify.ddBotNotify(text, desp); 钉钉机器人
@@ -159,7 +185,10 @@ console.debug('开始获取线报酷数据...');
             //合并换行符
             hebingdata+="\n\n";
         }
+
+        //合并推送格式： CAVID KARRIE纯棉抑菌裆 19.9【微博线报-服饰鞋帽-拼多多线报】http://new.ixbk.net/weibo/3617548.html
         hebingdata+=item.title+"【"+item.catename+"】"+domin+item.url;
+
     })
         //-----------------------------------------------
         //-----------------------------------------------
@@ -167,9 +196,11 @@ console.debug('开始获取线报酷数据...');
         //-----------------------------------------------
         
         //这里是合并发布内容(多条信息合并起来发送)，自己把下面//注释解除，然后把上面单条信息的notify.sendNotify 加上//注释
-        //notify.sendNotify(hebingdata, "线报酷来新活动了");
         
-
+        //if(hebingdata){
+            //notify.sendNotify(hebingdata, "线报酷来新活动了");
+        //}
+        
     console.log("\n\n\n\n*******************************************");
     console.log("*******************************************");
     console.debug('获取到'+items.length+"条新数据，本次任务结束");

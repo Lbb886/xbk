@@ -1,6 +1,7 @@
 //********用户配置区域开始*****************************************
-// 版本号：1.2
+// 版本号：1.3
 // 1.2版本：集成wxpusher推送，默认关闭一言
+// 1.3版本：集成微信公众号息知推送，继续修复读写历史记录出错
 
 const querystring = require('node:querystring');
 const got = require('got');
@@ -52,6 +53,9 @@ const push_config = {
   //wxpusher 文档：https://wxpusher.zjiecode.com/docs/
   WX_pusher_appToken: '',
   WX_pusher_topicIds: '',
+
+  //息知文档：https://xz.qqoq.net/
+  WX_XIZHI_KEY: '', //息知频道key
 
   // 微加机器人，官方网站：https://www.weplusbot.com/
   WE_PLUS_BOT_TOKEN: '', // 微加机器人的用户令牌
@@ -106,12 +110,14 @@ const push_config = {
   WEBHOOK_CONTENT_TYPE: '', // 自定义通知 content-type
 };
 
+//如果不要引用全局的config.sh的推送配置，请注释下面代码
 for (const key in push_config) {
   const v = process.env[key];
   if (v) {
     push_config[key] = v;
   }
 }
+//如果不要引用全局的config.sh的推送配置，请注释上面代码
 
 const $ = {
   post: (params, callback) => {
@@ -567,6 +573,52 @@ function wxPusherNotify(text, desp) {
               console.log('WxPusher发送通知消息成功🎉。\n');
             } else {
               console.log(`WxPusher发送通知消息异常 ${data.errmsg}\n`);
+            }
+          }
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve(data);
+        }
+    });
+
+  }else {
+      resolve();
+    }
+  });
+}
+
+
+
+// 息知 推送函数
+function wxXiZhiNotify(text, desp) {
+  return new Promise((resolve) => {
+    const {WX_XIZHI_KEY} =
+      push_config;
+  
+    const options = {
+      url: `https://xizhi.qqoq.net/${WX_XIZHI_KEY}.channel`,
+      json: {
+        title: text,
+        content: desp
+      },
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      timeout,
+    };
+    
+    if (WX_XIZHI_KEY) {
+    $.post(options, (err, resp, data) => {
+        try {
+          if (err) {
+            console.log('息知发送通知消息失败😞\n', err);
+          } else {
+            if (data.code === 200) {
+              console.log('息知发送通知消息成功🎉。\n');
+            } else {
+              console.log(`息知发送通知消息异常 \n`);
+              console.log(data);
             }
           }
         } catch (e) {
@@ -1358,6 +1410,7 @@ async function sendNotify(text, desp, params = {}) {
     tgBotNotify(text, desp), // telegram 机器人
     ddBotNotify(text, desp), // 钉钉机器人
     wxPusherNotify(text, desp), //wxpusher 推送
+    wxXiZhiNotify(text, desp), //息知推送
     qywxBotNotify(text, desp), // 企业微信机器人
     qywxamNotify(text, desp), // 企业微信应用消息推送
     iGotNotify(text, desp, params), // iGot
@@ -1376,5 +1429,5 @@ async function sendNotify(text, desp, params = {}) {
 }
 
 module.exports = {
-  sendNotify,serverNotify,pushPlusNotify,wePlusBotNotify,barkNotify,tgBotNotify,ddBotNotify,wxPusherNotify,qywxBotNotify,qywxamNotify,iGotNotify,gobotNotify,gotifyNotify,chatNotify,pushDeerNotify,aibotkNotify,fsBotNotify,smtpNotify,pushMeNotify,chronocatNotify,webhookNotify,qmsgNotify
+  sendNotify,serverNotify,pushPlusNotify,wePlusBotNotify,barkNotify,tgBotNotify,ddBotNotify,wxPusherNotify,wxXiZhiNotify,qywxBotNotify,qywxamNotify,iGotNotify,gobotNotify,gotifyNotify,chatNotify,pushDeerNotify,aibotkNotify,fsBotNotify,smtpNotify,pushMeNotify,chronocatNotify,webhookNotify,qmsgNotify
 };
